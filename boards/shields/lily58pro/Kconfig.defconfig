@@ -2,7 +2,7 @@ if SHIELD_LILY58PRO_DONGLE
 
 # Name must be less than 16 characters long!
 config ZMK_KEYBOARD_NAME
-    default "LILY58 PRO"
+    default "LILY58-PRO"
 
 config ZMK_SPLIT_ROLE_CENTRAL
     default y
