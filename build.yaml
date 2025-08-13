@@ -24,7 +24,7 @@ include:
   # -----------------------------------------
   # Change the board appropriately, you can use any board
   - board: seeeduino_xiao_ble
-    shield: lily58pro_dongle
+    shield: lily58pro_d
   - board: seeeduino_xiao_ble
     shield: settings_reset
   # Add these cmake-args to the peripherals you wish to use with the dongle
