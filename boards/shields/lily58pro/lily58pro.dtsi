@@ -1,21 +1,7 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include "trackmouse.dtsi"
-#include "lily58pro.dtsi"
 
-/ {
-    chosen {
-        zmk,kscan = &mock_kscan;
-        zmk,physical-layout = &physical_layout0;  // New item added
-    };
-
-    mock_kscan: mock_kscan_0 {
-        compatible = "zmk,kscan-mock";
-        columns = <0>;
-        rows = <0>;
-        events = <0>;
-    };
-
-    default_transform: keymap_transform_0 {
+ / {
+         default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <16>;
         rows = <7>;
@@ -37,22 +23,9 @@ RC(5,0) RC(5,1) RC(5,2) RC(5,3)
 RC(6,0)                 RC(6,1)
         >;
     };
-
-    physical_layout0: physical_layout_0 {
-        compatible = "zmk,physical-layout";
-        display-name = "Default Layout";
-        transform = <&default_transform>;
-    };
-};
-
-&uart0 {
-    status = "disabled";
-};
-
-&xiao_serial {
-    status = "disabled";
-};
-
-&trackball_listener{
-        status = "okay";
-};
+     
+     kscan0: kscan {
+         wakeup-source;
+     };
+ 
+ };
