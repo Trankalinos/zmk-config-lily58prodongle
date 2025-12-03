@@ -1,8 +1,8 @@
 file_format: "1"
-id: lily58pro_d
-name: Lily58
+id: lily58pro
+name: Lily58Pro
 type: shield
-url: https://github.com/Trankalinos/zmk_config_lily58prodongle
+url: https://github.com/Trankalinos/zmk-config-lily58prodongle
 requires: [seeeduino_xiao_ble]
 features:
   - keys
