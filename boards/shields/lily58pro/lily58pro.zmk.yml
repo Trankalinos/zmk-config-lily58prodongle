@@ -1,6 +1,6 @@
 file_format: "1"
-id: lily58prodongle
-name: lily58prodongle
+id: lily58pro
+name: lily58pro
 type: shield
 url: https://github.com/trankalinos/zmk-config-lily58prodongle
 requires:
