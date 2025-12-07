@@ -17,7 +17,47 @@
 #define LOWER 1
 #define RAISE 2
 
+#define BASE 3
+#define SCRLM 4
+#define SCRLH 5
+#define DEVICE 6
+#define BLTH 7
+#define SNIPE 8
+
 / {
+    combos {
+    compatible = "zmk,combos";
+    combo_esc {
+        timeout-ms = <50>;
+        key-positions = <2 3>;
+        bindings = <&mkp RCLK>;
+        };
+    };
+    behaviors {
+        ltm: layer-tap-momentary {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&mkp>;
+        };
+        lth: layer-tap-hold-while-undecided {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            hold-while-undecided;
+            tapping-term-ms = <150>;
+            bindings = <&mo>, <&mkp>;
+        };
+        mto: momentary-or-toggle {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            hold-while-undecided;
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&to>;
+        };
+    };
     keymap {
         compatible = "zmk,keymap";
 
@@ -28,12 +68,19 @@
     // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
     // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
     //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
                 bindings = <
     &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
     &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
     &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
     &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
                             &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+                
+                                            &ltm BLTH MB4 &ltm DEVICE MB5 &mkp MCLK &lth SCRLM RCLK
+                                            &mkp LCLK                               &mto SCRLM SNIPE
                 >;
 
                 sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
@@ -49,33 +96,168 @@
     // | LCTL  |     |  <  |  v   |  >   |      |                   |  +   |   4   |   5   |   6     |   -   |   ~   |
     // | LSHFT |     |     |      |      |      |        |  |   =   |  *   |   1   |   2   |   3     |   /   |  "|"  |
     //                     |      |      |      |  SPACE |  | ENTER |   0  |   .   |       |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
                 bindings = <
     &bt BT_CLR &bt BT_SEL 0     &bt BT_SEL 1      &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                          &trans          &trans      &trans      &bt BT_CLR_ALL    &kp EQUAL     &kp DEL
     &kp TAB    &trans           &trans            &kp UP       &trans       &trans                                &kp LBKT        &kp KP_N7   &kp KP_N8   &kp KP_N9         &kp RBKT      &trans
     &kp LCTRL  &trans           &kp LEFT          &kp DOWN     &kp RIGHT    &trans                                &kp KP_PLUS     &kp KP_N4   &kp KP_N5   &kp KP_N6         &kp KP_MINUS  &kp TILDE
     &kp LSHFT  &trans           &trans            &trans       &trans       &trans       &trans      &kp EQUAL &kp KP_MULTIPLY &kp KP_N1   &kp KP_N2   &kp KP_N3         &kp KP_DIVIDE &kp PIPE
                                                   &trans       &trans       &trans       &kp SPACE   &kp RET      &kp KP_N0       &kp KP_DOT  &trans
+    
+                                            &ltm BLTH MB4 &ltm DEVICE MB5 &mkp MCLK &lth SCRLM RCLK
+                                            &mkp LCLK                               &mto SCRLM SNIPE
                 >;
 
                 sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
             };
 
         raise_layer {
-// ------------------------------------------------------------------------------------------------------------
-// |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-// |   `   |  1  |  2  |  3   |  4   |  5   |                   |  6   |   7   |   8   |  9   |   0   |       |
-// |   F1  |  F2 |  F3 |  F4  |  F5  |  F6  |                   |      |   <-  |   v   |  ^   |  ->   |       |
-// |   F7  |  F8 |  F9 |  F10 |  F11 |  F12 |        |  |       |  +   |   -   |   =   |  [   |   ]   |   \   |
-//                     |      |      |      |        |  |       |      |       |       |
-            bindings = <
-&trans    &trans &trans &trans  &trans  &trans                       &trans      &trans    &trans    &trans   &trans    &trans
-&kp GRAVE &kp N1 &kp N2 &kp N3  &kp N4  &kp N5                       &kp N6      &kp N7    &kp N8    &kp N9   &kp N0    &trans
-&kp F1    &kp F2 &kp F3 &kp F4  &kp F5  &kp F6                       &trans      &kp LEFT  &kp DOWN  &kp UP   &kp RIGHT &trans
-&kp F7    &kp F8 &kp F9 &kp F10 &kp F11 &kp F12   &trans   &trans    &kp KP_PLUS &kp MINUS &kp EQUAL &kp LBKT &kp RBKT  &kp BSLH
-                        &trans  &trans  &trans    &trans   &trans    &trans      &trans    &trans
-            >;
+    // ------------------------------------------------------------------------------------------------------------
+    // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
+    // |   `   |  1  |  2  |  3   |  4   |  5   |                   |  6   |   7   |   8   |  9   |   0   |       |
+    // |   F1  |  F2 |  F3 |  F4  |  F5  |  F6  |                   |      |   <-  |   v   |  ^   |  ->   |       |
+    // |   F7  |  F8 |  F9 |  F10 |  F11 |  F12 |        |  |       |  +   |   -   |   =   |  [   |   ]   |   \   |
+    //                     |      |      |      |        |  |       |      |       |       |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &trans    &trans &trans &trans  &trans  &trans                       &trans      &trans    &trans    &trans   &trans    &trans
+    &kp GRAVE &kp N1 &kp N2 &kp N3  &kp N4  &kp N5                       &kp N6      &kp N7    &kp N8    &kp N9   &kp N0    &trans
+    &kp F1    &kp F2 &kp F3 &kp F4  &kp F5  &kp F6                       &trans      &kp LEFT  &kp DOWN  &kp UP   &kp RIGHT &trans
+    &kp F7    &kp F8 &kp F9 &kp F10 &kp F11 &kp F12   &trans   &trans    &kp KP_PLUS &kp MINUS &kp EQUAL &kp LBKT &kp RBKT  &kp BSLH
+                            &trans  &trans  &trans    &trans   &trans    &trans      &trans    &trans
+                
+                                            &ltm BLTH MB4 &ltm DEVICE MB5 &mkp MCLK &lth SCRLM RCLK
+                                            &mkp LCLK                               &mto SCRLM SNIPE
+                >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        scroll_tap_layer {
+            display-name = "Scroll-Momentary";
+            bindings = <
+    // ------------------------------------------------------------------------------------------------------------
+    // |  ESC  |  1  |  2  |  3   |  4   |  5   |                        |  6   |  7    |  8    |  9   |   0   | BK SP |
+    // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                        |  Y   |  U    |  I    |  O   |   P   |   -   |
+    // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
+    // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
+    //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
+    &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
+    &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+    &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                            &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+
+                &trans &trans &to SCRLH &trans
+                &to SCRLH               &trans
+            >;
+        };
+        scroll_hold_layer {
+            display-name = "Scroll-Keep";
+            bindings = <
+    // ------------------------------------------------------------------------------------------------------------
+    // |  ESC  |  1  |  2  |  3   |  4   |  5   |                        |  6   |  7    |  8    |  9   |   0   | BK SP |
+    // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                        |  Y   |  U    |  I    |  O   |   P   |   -   |
+    // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
+    // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
+    //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
+    &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
+    &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+    &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                            &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+                
+                &trans &trans &trans &to DEFAULT
+                &trans               &to DEFAULT
+            >;
+        };
+        device_layer {
+            display-name = "Device";
+            bindings = <
+    // ------------------------------------------------------------------------------------------------------------
+    // |  ESC  |  1  |  2  |  3   |  4   |  5   |                        |  6   |  7    |  8    |  9   |   0   | BK SP |
+    // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                        |  Y   |  U    |  I    |  O   |   P   |   -   |
+    // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
+    // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
+    //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
+    &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
+    &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+    &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                            &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+
+                &bootloader &trans &trans &bt BT_CLR
+                &trans                    &bt BT_CLR_ALL
+            >;
+        };
+        bluetooth_layer {
+            display-name = "Bluetooth";
+            bindings = <
+    // ------------------------------------------------------------------------------------------------------------
+    // |  ESC  |  1  |  2  |  3   |  4   |  5   |                        |  6   |  7    |  8    |  9   |   0   | BK SP |
+    // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                        |  Y   |  U    |  I    |  O   |   P   |   -   |
+    // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
+    // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
+    //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
+    &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
+    &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+    &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                            &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+
+                &trans &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2
+                &bt BT_SEL 3                     &bt BT_SEL 4
+            >;
+        };
+        snipe_layer {
+            display-name = "Snipe";
+            bindings = <
+    // ------------------------------------------------------------------------------------------------------------
+    // |  ESC  |  1  |  2  |  3   |  4   |  5   |                        |  6   |  7    |  8    |  9   |   0   | BK SP |
+    // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                        |  Y   |  U    |  I    |  O   |   P   |   -   |
+    // |  CTRL |  A  |  S  |  D   |  F   |  G   |                        |  H   |  J    |  K    |  L   |   ;   |   '   |
+    // | SHIFT |  Z  |  X  |  C   |  V   |  B   |     "["  |  |  "]"     |  N   |  M    |  ,    |  .   |   /   | SHIFT |
+    //                     | LALT | GUI  |LOWER |  SPACE   |  |  ENTER   | RAISE| GUI   | DEL   |
+    //
+    //                                          MB1     MB2     MB3     MB4
+    //                                          MB0                     MB5
+    //
+                bindings = <
+    &kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                            &kp N6     &kp N7   &kp N8    &kp N9  &kp N0   &kp BSPC
+    &kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                             &kp Y      &kp U    &kp I     &kp O   &kp P    &kp MINUS
+    &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+    &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                            &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
+                            
+                &trans &trans &trans &lth SCRLM RCLK
+                &trans               &to DEFAULT
+            >;
         };
     };
 };

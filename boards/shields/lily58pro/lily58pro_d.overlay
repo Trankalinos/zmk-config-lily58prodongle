@@ -1,5 +1,4 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include "trackmouse.dtsi"
 #include "lily58pro.dtsi"
 
 / {
