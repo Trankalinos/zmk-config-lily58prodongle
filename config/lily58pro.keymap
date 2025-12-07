@@ -10,8 +10,6 @@
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
-#include <behaviors/mouse_keys.dtsi>
-#include <dt-bindings/zmk/mouse.h>
 
 #define DEFAULT 0
 #define LOWER 1
@@ -254,7 +252,7 @@
     &kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                             &kp H      &kp J    &kp K     &kp L   &kp SEMI &kp SQT
     &kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B      &kp LBKT   &kp RBKT    &kp N      &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
                             &kp LALT &kp LGUI &mo LOWER  &kp SPACE  &kp RET     &mo RAISE  &kp RGUI &kp DEL
-                            
+
                 &trans &trans &trans &lth SCRLM RCLK
                 &trans               &to DEFAULT
             >;

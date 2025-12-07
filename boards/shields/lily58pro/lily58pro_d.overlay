@@ -51,7 +51,3 @@ RC(6,0)                 RC(6,1)
 &xiao_serial {
     status = "disabled";
 };
-
-&trackball_listener{
-        status = "okay";
-};
