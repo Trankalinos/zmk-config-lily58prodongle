@@ -23,3 +23,10 @@
 &left_encoder {
    status = "okay";
 };
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,physical_layout = &layout_0;
+    }
+}
