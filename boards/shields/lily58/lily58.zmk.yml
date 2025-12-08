@@ -1,13 +1,13 @@
 file_format: "1"
-id: lily58pro
-name: lily58pro
+id: lily58
+name: lily58
 type: shield
 url: https://github.com/trankalinos/zmk-config-lily58prodongle
 requires:
   - seeeduino_xiao_ble
   - nice_nano_v2
 siblings:
-  - lily58pro_d
-  - lily58pro_l
-  - lily58pro_r
-  - TranAdeptBLE
+  - lily58_dongle
+  - lily58_left
+  - lily58_right
+  - lily58_trackball

@@ -1,4 +1,4 @@
-if SHIELD_LILY58PRO_D
+if SHIELD_LILY58_DONGLE
 
 # Name must be less than 16 characters long!
 config ZMK_KEYBOARD_NAME
@@ -21,9 +21,6 @@ config ZMK_POINTING
 config ZMK_BLE
     default y
 
-config ZMK_USB 
-    default y
-
 # Set this to ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS + your desired number of BT profiles (default is 5)
 # config BT_MAX_CONN
     # default 5
@@ -34,7 +31,7 @@ config ZMK_USB
 
 endif
 
-if SHIELD_TRANADEPTBLE
+if SHIELD_LILY58_TRACKBALL
 
 # This is for TranAdept BLE
 config SPI
@@ -49,14 +46,17 @@ config ZMK_POINTING
 config ZMK_SPLIT
     default y
 
+config ZMK_SPLIT_ROLE_CENTRAL
+    default n
+
 endif
 
-if SHIELD_LILY58PRO_L || SHIELD_LILY58PRO_R
+if SHIELD_LILY58_LEFT || SHIELD_LILY58_RIGHT
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default n
 
 config ZMK_SPLIT
-    default y
-
-config ZMK_BLE
     default y
 
 endif

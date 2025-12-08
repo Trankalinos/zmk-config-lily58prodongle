@@ -24,19 +24,19 @@ include:
   # -----------------------------------------
   # Change the board appropriately, you can use any board
   - board: seeeduino_xiao_ble
-    shield: lily58pro_d
+    shield: lily58_dongle
   - board: seeeduino_xiao_ble
     shield: settings_reset
   # Adding in the TranAdept BLE
   - board: seeeduino_xiao_ble
-    shield: TranAdeptBLE
+    shield: lily58_trackball
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
   # Add these cmake-args to the peripherals you wish to use with the dongle
   - board: nice_nano_v2
-    shield: lily58pro_l
+    shield: lily58_left
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
   - board: nice_nano_v2
-    shield: lily58pro_r
+    shield: lily58_right
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
   - board: nice_nano_v2
     shield: settings_reset
